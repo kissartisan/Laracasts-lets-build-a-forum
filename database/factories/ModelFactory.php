@@ -28,7 +28,7 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
 
     return [
     	'user_id' => function() {
-    		return factory('App\User')->create()->id;
+    		return factory('App\User')->create()->user_id;
     	},
         'title' => $faker->sentence,
         'body' => $faker->paragraph,
@@ -41,10 +41,10 @@ $factory->define(App\Reply::class, function (Faker\Generator $faker) {
 
     return [
 	    'thread_id' => function() {
-    		return factory('App\Thread')->create()->id;
+    		return factory('App\Thread')->create()->thread_id;
     	},
     	'user_id' => function() {
-    		return factory('App\User')->create()->id;
+    		return factory('App\User')->create()->user_id;
     	},
         'body' => $faker->paragraph,
     ];

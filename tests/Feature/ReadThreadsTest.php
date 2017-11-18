@@ -36,7 +36,7 @@ class ReadThreadsTest extends TestCase
     function a_user_can_read_replies_that_are_associated_with_a_thread()
     {
         $reply = factory('App\Reply')
-                    ->create(['thread_id' => $this->thread->id]);
+                    ->create(['thread_id' => $this->thread->thread_id]);
 
         // When we visit a thread page,
         // Then we should see the replies
