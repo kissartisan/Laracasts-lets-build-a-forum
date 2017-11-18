@@ -28,7 +28,7 @@ class CreateThreadsTest extends TestCase
         $thread = factory('App\Thread')->make();
         $this->post('/threads', $thread->toArray());
 
-        // Then, when we visit the thread page,
+        // Then, when we visit the thread page, we should see the new thread
         $this->get($thread->path())
              ->assertSee($thread->title)
              ->assertSee($thread->body);
