@@ -30,8 +30,21 @@ $factory->define(App\Thread::class, function (Faker\Generator $faker) {
     	'user_id' => function() {
     		return factory('App\User')->create()->user_id;
     	},
+        'channel_id' => function () {
+            return factory('App\Channel')->create()->channel_id;
+        },
         'title' => $faker->sentence,
         'body' => $faker->paragraph,
+    ];
+});
+
+
+$factory->define(App\Channel::class, function (Faker\Generator $faker) {
+    $name = $faker->word;
+
+    return [
+        'name' => $name,
+        'slug' => $name
     ];
 });
 
