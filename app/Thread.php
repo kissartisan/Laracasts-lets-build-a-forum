@@ -9,6 +9,7 @@ class Thread extends Model
 {
     protected $guarded = [];
     protected $primaryKey = 'thread_id';
+    protected $with = ['creator', 'channel'];
 
     protected static function boot()
     {
@@ -30,9 +31,7 @@ class Thread extends Model
      */
 	public function replies()
 	{
-		return $this->hasMany(Reply::class, 'thread_id', 'thread_id')
-                    ->withCount('favorites')
-                    ->with('owner');
+		return $this->hasMany(Reply::class, 'thread_id', 'thread_id');
 	}
 
     /**
