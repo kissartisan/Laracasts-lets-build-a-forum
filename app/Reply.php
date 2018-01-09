@@ -2,12 +2,13 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\HasFavorites;
+use App\RecordsActivity;
+use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use HasFavorites;
+    use HasFavorites, RecordsActivity;
 
     protected $guarded = [];
     protected $primaryKey = 'reply_id';

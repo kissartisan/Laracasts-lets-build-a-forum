@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\RecordsActivity;
 use App\Reply;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
     protected $primaryKey = 'thread_id';
     protected $with = ['creator', 'channel'];
