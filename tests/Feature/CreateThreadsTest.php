@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use App\Activity;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
@@ -103,6 +104,8 @@ class CreateThreadsTest extends TestCase
 
         $this->assertDatabaseMissing('threads', ['thread_id' => $thread->thread_id]);
         $this->assertDatabaseMissing('replies', ['reply_id' => $reply->reply_id]);
+
+        $this->assertEquals(0, Activity::count());
     }
 
 }
