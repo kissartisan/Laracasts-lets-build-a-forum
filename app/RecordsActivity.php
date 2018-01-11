@@ -10,7 +10,7 @@ trait RecordsActivity
      * Replicate the boot method of the class being inject into
      * convention = boot + [name of the trait]
      */
-    protected  static function bootRecordsActivity()
+    protected static function bootRecordsActivity()
     {
         if (auth()->guest()) return;
 
@@ -34,6 +34,9 @@ trait RecordsActivity
         ]);
     }
 
+    /**
+     * Get all of the thread's activity.
+     */
     public function activity()
     {
         return $this->morphMany('App\Activity', 'subject');
