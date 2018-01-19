@@ -39,7 +39,7 @@ trait RecordsActivity
     }
 
     /**
-     * Get all of the thread's activity.
+     * Get all of the activity based on subject.
      */
     public function activity()
     {
