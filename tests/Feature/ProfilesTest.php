@@ -25,8 +25,6 @@ class ProfilesTest extends TestCase
     {
         $this->signIn();
 
-        $user = create('App\User');
-
         $thread = create('App\Thread', ['user_id' => auth()->id()]);
 
         $this->get("/profiles/" . auth()->user()->name)
