@@ -4,6 +4,13 @@ namespace App;
 
 trait HasFavorites
 {
+    protected static function bootHasFavorites()
+    {
+        static::deleting(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     /**
      * A Reply can have many favorites
      * @return Illuminate\Database\Eloquent\Model
@@ -30,7 +37,7 @@ trait HasFavorites
     {
         $attributes = ['user_id' => $userID];
 
-        $this->favorites()->where($attributes)->delete();
+        $this->favorites()->where($attributes)->get()->each->delete();
     }
 
     /**
