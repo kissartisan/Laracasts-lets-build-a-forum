@@ -22,9 +22,8 @@ trait HasFavorites
     {
         $attributes = ['user_id' => $userID];
 
-        if (! $this->favorites()->where($attributes)->exists()) {
+        if (! $this->favorites()->where($attributes)->exists())
             return $this->favorites()->create($attributes);
-        }
     }
 
     /**
