@@ -26,6 +26,13 @@ trait HasFavorites
             return $this->favorites()->create($attributes);
     }
 
+    public function unfavorite($userID)
+    {
+        $attributes = ['user_id' => $userID];
+
+        $this->favorites()->where($attributes)->delete();
+    }
+
     /**
      * Determine if the current reply has been favorited
      * @return boolean
@@ -33,6 +40,11 @@ trait HasFavorites
     public function isFavorited()
     {
         return !! $this->favorites->where('user_id', auth()->id())->count();
+    }
+
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
     }
 
     /**

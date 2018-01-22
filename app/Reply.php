@@ -13,6 +13,7 @@ class Reply extends Model
     protected $guarded = [];
     protected $primaryKey = 'reply_id';
     protected $with = ['owner', 'favorites'];
+    protected $appends = ['favoritesCount', 'isFavorited'];
 
     /**
      * A reply has an owner.
