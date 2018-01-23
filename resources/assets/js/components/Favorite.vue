@@ -37,12 +37,16 @@
                 axios.post(this.endpoint);
                 this.active = true;
                 this.count++;
+
+                flash('Favorited!');
             },
 
             destroy() {
                 axios.delete(this.endpoint);
                 this.active = false;
                 this.count--;
+
+                flash('Unfavorited!');
             }
         }
     }
