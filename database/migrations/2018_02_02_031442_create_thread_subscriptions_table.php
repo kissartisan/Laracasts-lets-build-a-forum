@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateThreadSubscriptionsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('thread_subscriptions', function (Blueprint $table) {
+            $table->increments('thread_subscription_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('thread_id')->unsigned();
+            $table->timestamps();
+
+            $table->foreign('thread_id')
+                  ->references('thread_id')
+                  ->on('threads')
+                  ->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('thread_subscriptions');
+    }
+}

@@ -27,15 +27,20 @@ trait HasFavorites
      */
     public function favorite($userID)
     {
-        $attributes = ['user_id' => $userID];
+        $attributes = ['user_id' => $userID ?: auth()->id()];
 
         if (! $this->favorites()->where($attributes)->exists())
             return $this->favorites()->create($attributes);
     }
 
+    /**
+     * Unfavorite a reply
+     * @param  int $userID
+     * @return mixed
+     */
     public function unfavorite($userID)
     {
-        $attributes = ['user_id' => $userID];
+        $attributes = ['user_id' => $userID ?: auth()->id()];
 
         $this->favorites()->where($attributes)->get()->each->delete();
     }
