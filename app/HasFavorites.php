@@ -42,7 +42,7 @@ trait HasFavorites
     {
         $attributes = ['user_id' => $userID ?: auth()->id()];
 
-        $this->favorites()->where($attributes)->get()->each->delete();
+        $this->favorites()->where($attributes)->get()->each->delete(); // HIgher order collection
     }
 
     /**

@@ -18,6 +18,9 @@
                     (this.active ? 'delete' : 'post')
                 ](location.pathname + '/subscriptions');
 
+                if (this.active) flash('Thread unsubscribed');
+                else flash('Thread subscribed');
+
                 this.active =! this.active;
             }
         }

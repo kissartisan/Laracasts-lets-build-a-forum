@@ -18373,6 +18373,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18425,6 +18436,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Favorite_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Favorite_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -18537,6 +18559,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         subscribe: function subscribe() {
             axios[this.active ? 'delete' : 'post'](location.pathname + '/subscriptions');
+
+            if (this.active) flash('Thread unsubscribed');else flash('Thread subscribed');
 
             this.active = !this.active;
         }

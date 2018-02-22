@@ -1,3 +1,14 @@
+<!--
+    The parent (Replies.vue) communicate with its child (Reply.vue) component by passing down data
+    Replies.vue - data="reply" will cascade down to Reply.vue
+    Reply.vue - props: ['data'],
+    Reply.vue - body: this.data.body
+
+    The child (Reply.vue) communicate with its parent (Replies.vue) is through events:
+    Reply.vue - this.$emit('deleted', this.data.reply_id);
+    Replies.vue -  @deleted="remove(index)"
+-->
+
 <template>
     <div>
         <div v-for="(reply, index) in items" :key="reply.reply_id">
