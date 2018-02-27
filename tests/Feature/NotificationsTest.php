@@ -2,21 +2,26 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Notifications\DatabaseNotification;
+use Tests\TestCase;
 
 class NotificationsTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->signIn();
+    }
+
     /** @test */
     function a_notification_is_prepared_when_a_subscribed_thread_receives_a_new_reply_that_is_not_by_the_current_user()
     {
-        // Given we have an authenticated user
-        $this->signIn();
-
         // When the user subscribe to a thread
         $thread = create('App\Thread')->subscribe();
 
@@ -45,53 +50,29 @@ class NotificationsTest extends TestCase
     /** @test */
     function a_user_can_fetch_their_unread_notifications()
     {
-        // Given we have an authenticated user
-        $this->signIn();
+        create(DatabaseNotification::class);
 
-        // When the user subscribe to a thread
-        $thread = create('App\Thread')->subscribe();
-
-        // When we add a reply
-        $thread->addReply([
-            'user_id' => create('App\User')->user_id,
-            'body'    => 'Hello world!'
-        ]);
-
-        $user = auth()->user();
-
-        // Then we should get unread notifications
-        $response = $this->getJson("/profiles/{$user->name}/notifications")->json();
-
-        // And assert that the response count it is equal to one
-        $this->assertCount(1, $response);
+        $this->assertCount(
+            1,
+            $this->getJson('/profiles/' . auth()->user()->name . '/notifications')->json()
+        );
     }
 
 
     /** @test */
     function a_user_can_mark_a_notification_as_read()
     {
-        // Given we have an authenticated user
-        $this->signIn();
+        create(DatabaseNotification::class);
 
-        // When the user subscribe to a thread
-        $thread = create('App\Thread')->subscribe();
+        tap(auth()->user(), function ($user) {
+            // If user has unread notifications
+            $this->assertCount(1, $user->unreadNotifications);
 
-        // When we add a reply
-        $thread->addReply([
-            'user_id' => create('App\User')->user_id,
-            'body'    => 'Hello world!'
-        ]);
+            // If we submit a delete request
+            $this->delete("/profiles/{$user->name}/notifications/" . $user->unreadNotifications->first()->id);
 
-        $user = auth()->user();
-
-        // If user has unread notifications
-        $this->assertCount(1, $user->unreadNotifications);
-        $notificationID = $user->unreadNotifications->first()->id;
-
-        // If we submit a delete request
-        $this->delete("/profiles/{$user->name}/notifications/{$notificationID}");
-
-        // Then we should not see unread notification
-        $this->assertCount(0, $user->fresh()->unreadNotifications);
+            // Then we should not see unread notification
+            $this->assertCount(0, $user->fresh()->unreadNotifications);
+        });
     }
 }
