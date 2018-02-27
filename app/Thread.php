@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ThreadHasNewReply;
 use App\Notifications\ThreadWasUpdated;
 use App\RecordsActivity;
 use App\Reply;
@@ -72,11 +73,19 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->subscriptions->filter(function ($subscription) use ($reply) {
-            return $subscription->user_id != $reply->user_id;
-        })->each->notify($reply);
+        $this->notifySubscribers($reply);
+
+        // event(new ThreadHasNewReply($this, $reply));
 
         return $reply;
+    }
+
+    public function notifySubscribers($reply)
+    {
+        $this->subscriptions
+             ->where('user_id', '!=', $reply->user_id)
+             ->each
+             ->notify($reply);
     }
 
     /**
