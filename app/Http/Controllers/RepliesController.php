@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Reply;
-use App\Spam;
+use App\Inspections\Spam;
 use App\Thread;
 use Illuminate\Http\Request;
 
@@ -23,8 +23,9 @@ class RepliesController extends Controller
     /**
      * Persist a new reply
      *
-     * @param channelId
-     * @param Thread $thread
+     * @param $channelId
+     * @param \App\Thread $thread
+     * @param \App\Inspections\Spam $spam
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store($channelId, Thread $thread, Spam $spam)
