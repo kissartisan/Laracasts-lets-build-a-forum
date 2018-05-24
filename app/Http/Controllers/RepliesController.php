@@ -29,14 +29,19 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
-        $this->validateReply();
+        try {
+            $this->validateReply();
 
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ]);
+            $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => auth()->id()
+            ]);
+        } catch (\Exception $e) {
+            return response('Sorry, your reply could not be saved at this time.', 422); // Unprocessable entity
+        }
 
-        if (request()->expectsJson()) return $reply->load(['owner']);
+        if (request()->expectsJson())
+            return $reply->load(['owner']);
 
         return back()->with('flash', 'Your reply has been posted!');
     }
@@ -45,9 +50,13 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
 
-        $this->validateReply();
+        try {
+            $this->validateReply();
+            $reply->update(request(['body']));
+        } catch (\Exception $e) {
+            return response('Sorry, your reply could not be saved at this time.', 422); // Unprocessable entity
+        }
 
-        $reply->update(request(['body']));
     }
 
     public function destroy(Reply $reply)
