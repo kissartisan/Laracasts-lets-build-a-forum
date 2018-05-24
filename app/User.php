@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class, 'user_id', 'user_id')->latest();
     }
 
+    public function lastReply()
+    {
+        return $this->hasOne(Reply::class, 'user_id', 'user_id')->latest();
+    }
+
     public function activity()
     {
         return $this->hasMany(Activity::class, 'user_id', 'user_id');
