@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Reply;
 use App\Thread;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -27,26 +27,12 @@ class RepliesController extends Controller
      * @param \App\Thread $thread
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-        if(Gate::denies('create', new Reply))
-            return response('You are posting too frequently, please take a break. :)', 422); // Unprocessable entity
-
-        try {
-            $this->validate(request(), ['body' => 'required|spamfree']);
-
-            $reply = $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id()
-            ]);
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved at this time.', 422); // Unprocessable entity
-        }
-
-        if (request()->expectsJson())
-            return $reply->load(['owner']);
-
-        return back()->with('flash', 'Your reply has been posted!');
+        return $thread->addReply([
+            'body' => $form->body,
+            'user_id' => auth()->id()
+        ])->load('owner');
     }
 
     public function update(Reply $reply)

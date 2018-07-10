@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         });
         /** OR **/
         // \View::share('channels', Channel::all());
+        // in Laravel 5.5 there is a make:rule command
 
         \Validator::extend('spamfree', 'App\Rules\SpamFree@passes');
     }
