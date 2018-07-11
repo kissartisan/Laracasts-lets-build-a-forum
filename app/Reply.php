@@ -58,7 +58,7 @@ class Reply extends Model
     {
         preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
 
-        return $matches[1];
+        return collect($matches[1]);
     }
 
 

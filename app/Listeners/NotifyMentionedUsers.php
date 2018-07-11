@@ -28,7 +28,7 @@ class NotifyMentionedUsers
      */
     public function handle(ThreadHasNewReply $event)
     {
-        collect($event->reply->mentionedUsers())
+        $event->reply->mentionedUsers()
             ->map(function($name) {
                 return User::whereName($name)->first();
             })
@@ -36,14 +36,5 @@ class NotifyMentionedUsers
             ->each(function($user) use($event) {
                 $user->notify(new YouWereMentioned($event->reply));
             });
-
-        // // Inspect the body of the reply for username mentions
-        // $mentionedUsers = $event->reply->mentionedUsers();
-
-        // // Then notified each mentioned user.
-        // foreach ($mentionedUsers as $name) {
-        //     if ($user = User::whereName($name)->first())
-        //         $user->notify(new YouWereMentioned($event->reply));
-        // }
     }
 }
