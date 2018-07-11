@@ -16,6 +16,12 @@ class RepliesController extends Controller
         $this->middleware('auth', ['except' => 'index']);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  Channel $channel
+     * @return \Illuminate\Http\Response
+     */
     public function index($channelId, Thread $thread)
     {
         return $thread->replies()->paginate(1);
@@ -29,28 +35,34 @@ class RepliesController extends Controller
      * @param \App\Thread $thread
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($channelId, Thread $thread, CreatePostRequest $form)
+    public function store($channelId, Thread $thread, CreatePostRequest $request)
     {
         return $thread->addReply([
-            'body' => $form->body,
+            'body' => $request->body,
             'user_id' => auth()->id()
         ])->load('owner');
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Thread  $thread
+     * @return \Illuminate\Http\Response
+     */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-
-        try {
-            $this->validate(request(), ['body' => 'required|spamfree']);
-
-            $reply->update(request(['body']));
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved at this time.', 422); // Unprocessable entity
-        }
-
+        $this->validate(request(), ['body' => 'required|spamfree']);
+        $reply->update(request(['body']));
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Thread  $thread
+     * @return \Illuminate\Http\Response
+     */
     public function destroy(Reply $reply)
     {
         $this->authorize('update', $reply);
