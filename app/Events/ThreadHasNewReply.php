@@ -3,24 +3,23 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class ThreadHasNewReply
 {
-    public $thread;
     public $reply;
 
-    use SerializesModels;
+    use Dispatchable, SerializesModels;
 
     /**
      * Create a new event instance
      * @param \App\Thread $thread
      * @param \App\reply $reply
      */
-    public function __construct($thread, $reply)
+    public function __construct($reply)
     {
-        $this->thread = $thread;
         $this->reply = $reply;
     }
 }
