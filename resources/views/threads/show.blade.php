@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
-@section('header')
+@push('header')
     <link rel="stylesheet" href="/css/vendor/jquery.atwho.css">
-@endsection
-
+@endpush
 
 @section('content')
 <thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
@@ -14,7 +13,9 @@
                     <div class="panel-heading">
                         <div class="level">
                             <span class="flex">
-                                <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> posted: {{ $thread->title }}
+                                <a href="{{ route('profile', $thread->creator) }}">
+                                    {{ $thread->creator->name }}
+                                </a> posted: {{ $thread->title }}
                             </span>
 
                             @can('update', $thread)
@@ -22,7 +23,9 @@
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
 
-                                    <button type="submit" class="btn btn-link">Delete Thread</button>
+                                    <button type="submit" class="btn btn-link">
+                                        Delete Thread
+                                    </button>
                                 </form>
                             @endcan
                         </div>
