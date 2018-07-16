@@ -59,9 +59,10 @@ class User extends Authenticatable
         );
     }
 
-    public function avatar()
+    public function getAvatarPathAttribute($avatar)
     {
-        return  '/storage/' . $this->avatar_path ?: 'avatars/default.jpg';
+        $avatarPath = $avatar ?: 'images/avatars/default.png';
+        return  '/storage/' . $avatarPath;
     }
 
     public function visitedThreadCacheKey($thread)
