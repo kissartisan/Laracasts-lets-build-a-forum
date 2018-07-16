@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
 
         // The star "*" means share this variable with every single view
         \View::composer('*', function($view) {
+            // Cache::forget('channels');
             $channels = Cache::rememberForever('channels', function() {
                 return Channel::all();
             });
