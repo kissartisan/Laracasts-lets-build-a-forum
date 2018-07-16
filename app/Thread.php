@@ -5,12 +5,13 @@ namespace App;
 use App\Events\ThreadHasNewReply;
 use App\Notifications\ThreadWasUpdated;
 use App\RecordsActivity;
+use App\RecordsVisits;
 use App\Reply;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, RecordsVisits;
 
     protected $guarded = [];
     protected $primaryKey = 'thread_id';
