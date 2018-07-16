@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Thread;
+use App\Trending;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,16 +24,17 @@ class ThreadsController extends Controller
      * @param  Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel, ThreadFilters $filters)
+    public function index(Channel $channel, ThreadFilters $filters, Trending $trending)
     {
         $threads = $this->getThreads($channel, $filters);
 
         if (request()->wantsJson())
             return $threads;
 
-        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 4));
-
-        return view('threads.index', compact('threads', 'trending'));
+        return view('threads.index', [
+            'threads'  => $threads,
+            'trending' => $trending->get()
+        ]);
     }
 
     /**
@@ -70,22 +72,20 @@ class ThreadsController extends Controller
                     ->with('flash', 'Your thread has been published!');
     }
 
+
     /**
-     * Display the specified resource.
-     *
-     * @param  $channeld
-     * @param  \App\Thread  $thread
+     * Display the specified resources
+     * @param  integer   $channelId
+     * @param  Thread   $thread
+     * @param  Trending $trending
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channelId, Thread $thread, Trending $trending)
     {
         if (auth()->check())
             auth()->user()->read($thread);
 
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'path'  => $thread->path()
-        ]));
+        $trending->push($thread);
 
         return view('threads.show', compact('thread'));
     }
