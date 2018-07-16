@@ -5,13 +5,13 @@ namespace App;
 use App\Events\ThreadHasNewReply;
 use App\Notifications\ThreadWasUpdated;
 use App\RecordsActivity;
-use App\RecordsVisits;
 use App\Reply;
+use App\Visits;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     protected $guarded = [];
     protected $primaryKey = 'thread_id';
@@ -131,5 +131,10 @@ class Thread extends Model
         // $key = sprintf("users.%s.visits.%s",  auth()->id(), $this->thread_id);
 
         return  $this->updated_at > cache($key);
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 }
