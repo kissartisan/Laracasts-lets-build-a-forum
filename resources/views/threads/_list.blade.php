@@ -37,7 +37,10 @@
             <hr>
         </div>
         <div class="panel-footer">
-            {{ $thread->visits()->count() }} visits
+            <!-- From Redis -->
+            {{-- {{ $thread->visits()->count() }} --}}
+
+            {{ $thread->visits }} visits
         </div>
     </div>
 @empty

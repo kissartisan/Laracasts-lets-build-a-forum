@@ -136,23 +136,14 @@ class ThreadTest extends TestCase
         });
     }
 
-    /** @test */
-    public function a_thread_records_each_visit()
-    {
-        $thread = make('App\Thread', ['thread_id' => 1]);
-        $thread->visits()->reset();
-        $this->assertSame(0, $thread->visits()->count());
+    /** @test From Redis, not used */
+    // public function a_thread_records_each_visit()
+    // {
+    //     $thread = make('App\Thread', ['thread_id' => 1]);
+    //     $thread->visits()->reset();
+    //     $this->assertSame(0, $thread->visits()->count());
 
-        $thread->visits()->record();
-        $this->assertEquals(1, $thread->visits()->count());
-
-        // $thread->resetVisits();
-        // $this->assertSame(0, $thread->visits());
-
-        // $thread->recordVisit();
-        // $this->assertEquals(1, $thread->visits());
-
-        // $thread->recordVisit();
-        // $this->assertEquals(2, $thread->visits());
-    }
+    //     $thread->visits()->record();
+    //     $this->assertEquals(1, $thread->visits()->count());
+    // }
 }
