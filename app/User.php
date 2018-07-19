@@ -16,10 +16,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
+    protected $guarded = [
         'name', 'email', 'password', 'avatar_path'
     ];
     protected $primaryKey = 'user_id';
+    protected $casts = [
+        'confirmed' => 'boolean'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -57,6 +60,12 @@ class User extends Authenticatable
             $this->visitedThreadCacheKey($thread),
             Carbon::now()
         );
+    }
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->save();
     }
 
     public function getAvatarPathAttribute($avatar)
